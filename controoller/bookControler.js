@@ -35,12 +35,25 @@ const updateABook = async (req, res) => {
       new: true,
       ruValidators: true,
     });
-    if(!book){
-      return res.status(404).json(`No such a  book with Id : ${id}`)
+    if (!book) {
+      return res.status(404).json(`No such a  book with Id : ${id}`);
     }
-    res.status(200).json(book)
+    res.status(200).json(book);
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+};
+
+const deleteABook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findByIdAndDelete(id);
+    if (!book) {
+      return res.status(404).json(`No book with that id : ${id}`);
+    }
+    res.status(200).send("Book Deleted Successfully!");
+  } catch (error) {
+    res.status(500).json({msg: error.message})
   }
 };
 
@@ -48,5 +61,6 @@ module.exports = {
   createBook,
   getAllBooks,
   getABook,
-  updateABook
+  updateABook,
+  deleteABook,
 };
